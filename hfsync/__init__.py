@@ -7,9 +7,31 @@ from smart_open import open as sopen
 from smart_open import parse_uri
 from smart_open import s3
 import logging
+import threading
 
 _known_files = ['config.json', 'flex_model.msgpack', 'pytorch_model.bin', 'rust_model.ot', 'tf_model.h5', 'tokenizer.json', 'tokenizer_config.json', 'vocab.txt', 'merges.txt', 'spiece.model']
-logger = logging.getLogger(__name__)
+
+_lock = threading.Lock()
+_logger_handler = None
+
+
+def _configure_logger():
+    global _logger_handler
+    with _lock:
+        if _logger_handler:
+            return
+        _logger_handler = logging.getLogger(__name__)
+        _logger_handler.setLevel(logging.INFO)
+        console_handler = logging.StreamHandler(console_log_output)
+        console_handler.setLevel(logging.INFO)
+        _logger_handler.addHandler(console_handler)
+        _logger_handler.propagate = False
+
+def get_logger():
+    _configure_logger()
+    return _logger_handler
+
+logger = get_logger()
 
 class FIO:
     def __init__(self, auth_client):
