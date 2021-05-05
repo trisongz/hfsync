@@ -162,8 +162,8 @@ class Sync:
     def is_local(self, file_path):
         return os.path.exists(file_path)
 
-    def sync_to_local(local_path=None, cloud_path=None, overwrite=False):
-        return self.copy_pretrained('cloud', local_path, cloud_path, overwrite)
+    def sync_to_local(self, local_path=None, cloud_path=None, overwrite=False):
+        return self.copy_pretrained(source='cloud', local_path=local_path, cloud_path=cloud_path, overwrite=overwrite)
 
     def get_prefix(self):
         self.obs = self.cloud_path.split('://')[0]
