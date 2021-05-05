@@ -61,7 +61,7 @@ class FIO:
         return gcopy(src_file, dest_file, overwrite)
     
     def copy(self, src_file, dest_directory, overwrite=False):
-        dest_fn = os.path.join(dest_directory, os.path.basename(src_file))
+        dest_file = os.path.join(dest_directory, os.path.basename(src_file))
         return self._copyfunct(src_file, dest_file, overwrite)
     
     def copy_file(self, src_file, dest_file, overwrite=False):
