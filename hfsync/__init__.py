@@ -22,7 +22,7 @@ class FIO:
         return sopen(url_or_path, mode='wb', transport_params=self.auth_client())
     
     def copy(self, src_file, dest_directory):
-        dest_fn = os.path.join(os.path.basename(src_file), dest_directory)
+        dest_fn = os.path.join(dest_directory, os.path.basename(src_file))
         with self.read(src_file) as r, self.write(dest_fn) as f:
             for chunk in r:
                 f.write(chunk)
@@ -103,7 +103,7 @@ class Sync:
         res = {}
         logger.info(f'Syncing {len(filenames)} Files from {source} to {copy_path}. Overwrite = {overwrite}')
         for fn in filenames:
-            if (source == 'cloud' and not File.exists(File.join(File.base(copy_path), fn))) or overwrite:
+            if (source == 'cloud' and not File.exists(File.join(copy_path, File.base(fn)))) or overwrite:
                 dest_fn = self.f.copy(fn, copy_path)
                 logger.info(f'Src: {fn} -> Dest: {dest_fn}')
                 res[fn] = dest_fn
