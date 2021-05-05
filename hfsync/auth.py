@@ -28,7 +28,7 @@ class S3Auth:
         self.kwargs = kwargs
         self.auth_params = cloud_envs['S3'].copy()
         if access_key and secret_key:
-            self.auth_params.update({'aws_access_key_id': access_key, 'aws_secret_access_key': secret_key, {'aws_session_token': session_token}})
+            self.auth_params.update({'aws_access_key_id': access_key, 'aws_secret_access_key': secret_key, 'aws_session_token': session_token})
             self.set_env()
         else:
             self.check_env()
