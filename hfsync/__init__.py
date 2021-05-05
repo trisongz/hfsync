@@ -43,20 +43,29 @@ class FIO:
     def write(self, url_or_path):
         return sopen(url_or_path, mode='wb', transport_params=self.auth_client())
     
-    def copy(self, src_file, dest_directory):
-        dest_fn = os.path.join(dest_directory, os.path.basename(src_file))
+    def scopy(self, src_file, dest_fn):
         with self.read(src_file) as r, self.write(dest_fn) as f:
             for chunk in r:
                 f.write(chunk)
             f.close()
         return dest_fn
+
+    def gcopy(self, src_file, dest_fn, overwrite=False):
+        return File.copy(src_file, dest_fn, overwrite)
     
-    def copy_file(self, src_file, dest_file):
-        with self.read(src_file) as r, self.write(dest_file) as f:
-            for chunk in r:
-                f.write(chunk)
-            f.close()
-        return dest_fn
+    def _copyfunct(self, src_file, dest_file, overwrite=False):
+        dest_scheme = parse_uri(dest_file).scheme
+        src_scheme = parse_uri(src_file).scheme
+        if dest_scheme == 's3' or src_scheme == 's3':
+            return scopy(src_file, dest_file, overwrite)
+        return gcopy(src_file, dest_file, overwrite)
+    
+    def copy(self, src_file, dest_directory, overwrite=False):
+        dest_fn = os.path.join(dest_directory, os.path.basename(src_file))
+        return self._copyfunct(src_file, dest_file, overwrite)
+    
+    def copy_file(self, src_file, dest_file, overwrite=False):
+        return self._copyfunct(src_file, dest_file, overwrite)
 
     def list_s3(self, s3_dir):
         s3_data = self.parse_s3(s3_dir)
