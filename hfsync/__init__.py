@@ -51,7 +51,8 @@ class FIO:
         return dest_fn
 
     def gcopy(self, src_file, dest_fn, overwrite=False):
-        return File.copy(src_file, dest_fn, overwrite)
+        File.copy(src_file, dest_fn, overwrite)
+        return dest_fn
     
     def _copyfunct(self, src_file, dest_file, overwrite=False):
         dest_scheme = parse_uri(dest_file).scheme
@@ -95,12 +96,6 @@ class FIO:
     def parse_s3(cls, s3_url):
         s = parse_uri(s3_url)
         return {'bucket': s.bucket, 'prefix': s.blob_id}
-        #if 's3' in s3_url:
-        #    s3_url = s3_url.split('://')[-1].strip()
-        #sp = s3_url.split('/')
-        #bucket = sp.pop(0)
-        #prefix = ('/').join(sp)
-        #return {'bucket': bucket, 'prefix': prefix}
 
 class Sync:
     def __init__(self, local_path, cloud_path=None, auth_client=None):
@@ -133,7 +128,6 @@ class Sync:
             return
         res = {}
         logger.info(f'Syncing {len(filenames)} Files from {source} to {copy_path}. Overwrite = {overwrite}')
-        logger.info(filenames)
         for fn in filenames:
             if (source == 'cloud' and not File.exists(File.join(copy_path, File.base(fn)))) or overwrite:
                 dest_fn = self.f.copy(fn, copy_path)
