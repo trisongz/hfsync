@@ -73,17 +73,17 @@ results = sync_client.save_pretrained(model, tokenizer)
 filename = '/content/model2/pytorch_model.bin'
 sync_client.copy(filename) # Copies to the set cloud_path variable -> 'gs://bucket/model/experiment2/pytorch_model.bin'
 sync_client.copy(filename, dest='gs://bucket/model/experiment3') # Copies to dest variable -> 'gs://bucket/model/experiment3/pytorch_model.bin'
-sync_client.copy(filename, dest='gs://bucket/model/experiment3/model.bin') # Copies to dest variable -> 'gs://bucket/model/experiment3/model.bin'
+sync_client.copy_file(filename, dest='gs://bucket/model/experiment3/model.bin') # Copies to dest variable -> 'gs://bucket/model/experiment3/model.bin'
 
 filename = 'gs://bucket/model/experiment2/pytorch_model.bin'
 sync_client.copy(filename) # Copies to the set local_path variable -> '/content/model2/pytorch_model.bin'
 sync_client.copy(filename, dest='/content/model3') # Copies to dest variable -> '/content/model3/pytorch_model.bin'
-sync_client.copy(filename, dest='/content/model3/model.bin') # Copies to dest variable -> '/content/model3/model.bin'
+sync_client.copy_file(filename, dest='/content/model3/model.bin') # Copies to dest variable -> '/content/model3/model.bin'
 
 # Copy Explicitly
 src_file = '/content/mydataset.pb'
 dest_file = 's3://bucket/data/dataset.pb'
-sync_client.copy(src_file, dest_file)
+sync_client.copy_file(src_file, dest_file)
 
 ```
 ### Environment Variables Used
