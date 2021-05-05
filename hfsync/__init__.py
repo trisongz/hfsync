@@ -3,7 +3,8 @@ import os
 from fileio import File
 from . import auth
 from hfsync.auth import GCSAuth, AZAuth, S3Auth
-from smart_open import open_uri as sopen
+from smart_open import open as sopen
+from smart_open import parse_uri
 from smart_open import s3
 import logging
 
@@ -61,12 +62,14 @@ class FIO:
     
     @classmethod
     def parse_s3(cls, s3_url):
-        if 's3' in s3_url:
-            s3_url = s3_url.split('://')[-1].strip()
-        sp = s3_url.split('/')
-        bucket = sp.pop(0)
-        prefix = ('/').join(sp)
-        return {'bucket': bucket, 'prefix': prefix}
+        s = parse_uri(s3_url)
+        return {'bucket': s.bucket, 'prefix': s.blob_id}
+        #if 's3' in s3_url:
+        #    s3_url = s3_url.split('://')[-1].strip()
+        #sp = s3_url.split('/')
+        #bucket = sp.pop(0)
+        #prefix = ('/').join(sp)
+        #return {'bucket': bucket, 'prefix': prefix}
 
 class Sync:
     def __init__(self, local_path, cloud_path=None, auth_client=None):
