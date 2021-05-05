@@ -15,7 +15,6 @@ deps = {
         'file-io[cloud]',
         'transformers',
     ],
-    }
 }
 
 with open(os.path.join(root, 'README.md'), 'rb') as readme:
