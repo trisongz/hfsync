@@ -57,8 +57,8 @@ class FIO:
         dest_scheme = parse_uri(dest_file).scheme
         src_scheme = parse_uri(src_file).scheme
         if dest_scheme == 's3' or src_scheme == 's3':
-            return scopy(src_file, dest_file, overwrite)
-        return gcopy(src_file, dest_file, overwrite)
+            return self.scopy(src_file, dest_file, overwrite)
+        return self.gcopy(src_file, dest_file, overwrite)
     
     def copy(self, src_file, dest_directory, overwrite=False):
         dest_file = os.path.join(dest_directory, os.path.basename(src_file))
