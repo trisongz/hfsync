@@ -1,5 +1,5 @@
-
 import os
+import sys
 from fileio import File
 from . import auth
 from hfsync.auth import GCSAuth, AZAuth, S3Auth
@@ -22,7 +22,7 @@ def _configure_logger():
             return
         _logger_handler = logging.getLogger(__name__)
         _logger_handler.setLevel(logging.INFO)
-        console_handler = logging.StreamHandler(console_log_output)
+        console_handler = logging.StreamHandler(sys.stdout)
         console_handler.setLevel(logging.INFO)
         _logger_handler.addHandler(console_handler)
         _logger_handler.propagate = False
