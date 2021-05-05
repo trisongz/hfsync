@@ -124,6 +124,7 @@ class Sync:
             return
         res = {}
         logger.info(f'Syncing {len(filenames)} Files from {source} to {copy_path}. Overwrite = {overwrite}')
+        logger.info(filenames)
         for fn in filenames:
             if (source == 'cloud' and not File.exists(File.join(copy_path, File.base(fn)))) or overwrite:
                 dest_fn = self.f.copy(fn, copy_path)
